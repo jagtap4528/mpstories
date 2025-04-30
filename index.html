@@ -31,6 +31,90 @@
         <button class="cta-btn">Get Started</button>
     </section>
 
+class SetADT:
+    def __init__(self):
+        self.data = []
+
+    def add(self, element):
+        if element not in self.data:
+            self.data.append(element)
+
+    def remove(self, element):
+        if element in self.data:
+            self.data.remove(element)
+
+    def contains(self, element):
+        return element in self.data
+
+    def size(self):
+        return len(self.data)
+
+    def iterator(self):
+        return iter(self.data)
+
+    def intersection(self, other_set):
+        result = SetADT()
+        for elem in self.data:
+            if elem in other_set.data:
+                result.add(elem)
+        return result
+
+    def union(self, other_set):
+        result = SetADT()
+        for elem in self.data + other_set.data:
+            result.add(elem)
+        return result
+
+    def difference(self, other_set):
+        result = SetADT()
+        for elem in self.data:
+            if elem not in other_set.data:
+                result.add(elem)
+        return result
+
+    def subset(self, other_set):
+        for elem in self.data:
+            if elem not in other_set.data:
+                return False
+        return True
+
+    def display(self):
+        print(self.data)
+# Create two sets
+A = SetADT()
+B = SetADT()
+
+# Add elements
+A.add(1)
+A.add(2)
+A.add(3)
+
+B.add(2)
+B.add(3)
+B.add(4)
+
+# Display sets
+print("Set A:", end=" ")
+A.display()
+print("Set B:", end=" ")
+B.display()
+
+# Intersection
+print("Intersection of A and B:", end=" ")
+A.intersection(B).display()
+
+# Union
+print("Union of A and B:", end=" ")
+A.union(B).display()
+
+# Difference
+print("Difference A - B:", end=" ")
+A.difference(B).display()
+
+# Subset
+print("Is A a subset of B?", A.subset(B))
+print("Is {2,3} subset of A?", SetADT().union(B).subset(A))
+
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7303239347880031"
      crossorigin="anonymous"></script>
 <!-- Chu -->
@@ -55,6 +139,85 @@
     <footer>
         <p>&copy; 2024 मराठी PLAYER. All rights reserved.</p>
     </footer>
+
+#include <iostream>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    bool isThreaded; // true if right pointer is a thread
+
+    Node(int value) {
+        data = value;
+        left = right = nullptr;
+        isThreaded = false;
+    }
+};
+
+// Function to create threaded binary tree
+Node* createThreaded(Node* root) {
+    if (root == nullptr)
+        return nullptr;
+
+    // If leaf node
+    if (root->left == nullptr && root->right == nullptr)
+        return root;
+
+    // If left subtree exists
+    if (root->left != nullptr) {
+        Node* leftSubtreeLast = createThreaded(root->left);
+        leftSubtreeLast->right = root;
+        leftSubtreeLast->isThreaded = true;
+    }
+
+    // If right subtree exists
+    if (root->right != nullptr)
+        return createThreaded(root->right);
+
+    return root;
+}
+
+// Function to find the leftmost node
+Node* leftMost(Node* node) {
+    if (node == nullptr)
+        return nullptr;
+
+    while (node->left != nullptr)
+        node = node->left;
+    return node;
+}
+
+// Inorder traversal of threaded binary tree
+void inorderTraversal(Node* root) {
+    Node* cur = leftMost(root);
+    while (cur != nullptr) {
+        cout << cur->data << " ";
+
+        if (cur->isThreaded)
+            cur = cur->right;
+        else
+            cur = leftMost(cur->right);
+    }
+}
+
+// Driver Code
+int main() {
+    Node* root = new Node(6);
+    root->left = new Node(3);
+    root->right = new Node(8);
+    root->left->left = new Node(1);
+    root->left->right = new Node(5);
+
+    createThreaded(root);
+
+    cout << "Inorder Traversal of Threaded Binary Tree:\n";
+    inorderTraversal(root);
+
+    return 0;
+}
 
     <script src="script.js"></script>
 </body>
