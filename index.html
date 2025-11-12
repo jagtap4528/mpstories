@@ -45,12 +45,89 @@
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
+    class SetADT:
+    def __init__(self):
+        self.elements = []
+
+    def add(self, newElement):
+        if newElement not in self.elements:
+            self.elements.append(newElement)
+
+    def remove(self, element):
+        if element in self.elements:
+            self.elements.remove(element)
+
+    def contains(self, element):
+        return element in self.elements
+
+    def size(self):
+        return len(self.elements)
+
+    def iterator(self):
+        return iter(self.elements)
+
+    def intersection(self, other_set):
+        result = SetADT()
+        for elem in self.elements:
+            if other_set.contains(elem):
+                result.add(elem)
+        return result
+
+    def union(self, other_set):
+        result = SetADT()
+        for elem in self.elements:
+            result.add(elem)
+        for elem in other_set.elements:
+            result.add(elem)
+        return result
+
+    def difference(self, other_set):
+        result = SetADT()
+        for elem in self.elements:
+            if not other_set.contains(elem):
+                result.add(elem)
+        return result
+
+    def subset(self, other_set):
+        for elem in self.elements:
+            if not other_set.contains(elem):
+                return False
+        return True
+
+    def __str__(self):
+        return f"Set: {self.elements}"
+
     <!-- APK Download Section -->
     <section class="apk-download">
         <h2>Download the MP Stories App</h2>
         <p>Get the latest version of our app for the best experience.</p>
         <a href="app/mpstories.apk" download class="download-btn">Download APK</a>
     </section>
+    A = SetADT()
+A.add(1)
+A.add(2)
+A.add(3)
+
+B = SetADT()
+B.add(2)
+B.add(3)
+B.add(4)
+
+print("A:", A)
+print("B:", B)
+
+# Intersection
+print("Intersection:", A.intersection(B))
+
+# Union
+print("Union:", A.union(B))
+
+# Difference
+print("Difference (A - B):", A.difference(B))
+
+# Subset
+print("Is A subset of B?", A.subset(B))
+print("Is {2,3} subset of A?", SetADT().union(B).subset(A))
 
     <!-- Footer Section -->
     <footer>
